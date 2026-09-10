@@ -3,26 +3,19 @@
   "version": "1.0.0",
   "description": "Vue 2 + Webpack project loaded with Vue 3 migration gotchas, for interview practice",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "webpack serve --mode development --open",
-    "build": "webpack --mode production"
+    "dev": "vite",
+    "build": "vite build"
   },
   "dependencies": {
-    "vue": "2.6.14",
-    "vue-router": "3.6.5",
-    "vuex": "3.6.2"
+    "vue": "^3.5.42",
+    "vue-router": "^4.5.1",
+    "vuex": "^4.1.0",
+    "mitt": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@babel/preset-env": "^7.24.0",
-    "babel-loader": "^9.1.3",
-    "css-loader": "^5.2.7",
-    "html-webpack-plugin": "^5.6.0",
-    "style-loader": "^2.0.0",
-    "vue-loader": "^15.11.1",
-    "vue-template-compiler": "2.6.14",
-    "webpack": "^5.90.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.0"
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.3.0"
   }
 }

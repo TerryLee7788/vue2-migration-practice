@@ -6,18 +6,18 @@
     <ul v-else class="cart-list">
       <li v-for="item in cartItems" :key="item.id">
         <span>{{ item.name }} × {{ item.qty }}</span>
-        <span>{{ (item.price * item.qty) | currency }}</span>
+        <span>{{ formatCurrency(item.price * item.qty) }}</span>
         <button class="ghost" @click="removeFromCart(item.id)">移除</button>
       </li>
     </ul>
 
-    <h3 v-if="cartItems.length">總計：{{ cartTotal | currency }}</h3>
+    <h3 v-if="cartItems.length">總計：{{ formatCurrency(cartTotal) }}</h3>
   </div>
 </template>
 
 <script>
-// ⚠️ 遷移點：mapGetters / mapActions 來自 vuex 3
 import { mapGetters, mapActions } from 'vuex'
+import { formatCurrency } from '../utils/format'
 
 export default {
   name: 'Cart',
@@ -25,7 +25,8 @@ export default {
     ...mapGetters(['cartItems', 'cartTotal'])
   },
   methods: {
-    ...mapActions(['removeFromCart'])
+    ...mapActions(['removeFromCart']),
+    formatCurrency
   }
 }
 </script>

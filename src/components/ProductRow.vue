@@ -1,7 +1,7 @@
 <template>
-  <!-- ⚠️ 遷移點：v-on="$listeners" 在 Vue 3 移除，$listeners 已併入 $attrs
-       inheritAttrs: false + v-bind="$attrs" 的行為在 Vue 3 也有變化 -->
-  <button class="ghost" v-bind="$attrs" v-on="$listeners" @click="onClick">
+  <!-- ✅ 遷移點 11：$listeners 已併入 $attrs，移除 v-on="$listeners"，
+       只需 v-bind="$attrs" -->
+  <button class="ghost" v-bind="$attrs" @click="onClick">
     加入購物車
   </button>
 </template>
@@ -13,9 +13,10 @@ export default {
   props: {
     product: { type: Object, required: true }
   },
+  // 宣告 emits，避免 @add 監聽器被當成一般屬性落入 $attrs
+  emits: ['add'],
   methods: {
     onClick() {
-      // 也可直接 this.$emit('add')，這裡示範 $listeners 透傳
       this.$emit('add', this.product.id)
     }
   }

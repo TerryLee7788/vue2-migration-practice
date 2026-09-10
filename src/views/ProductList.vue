@@ -3,22 +3,20 @@
     <div class="card">
       <h2>商品列表</h2>
 
-      <!-- ⚠️ 遷移點：.sync 修飾詞在 Vue 3 移除，改用 v-model:keyword -->
-      <SearchBox :keyword.sync="keyword" placeholder="搜尋商品..." />
+      <!-- ✅ 遷移點 9：.sync 修飾詞改成 v-model:keyword -->
+      <SearchBox v-model:keyword="keyword" placeholder="搜尋商品..." />
 
-      <!-- ⚠️ 遷移點：舊版具名 / 作用域插槽語法 slot-scope + slot="..."
-           Vue 3 統一改成 v-slot:name="{ ... }" -->
+      <!-- ✅ 遷移點 10：具名 / 作用域插槽統一改成 v-slot -->
       <DataList :items="filteredProducts">
-        <template slot="empty">
+        <template v-slot:empty>
           <p>找不到符合「{{ keyword }}」的商品。</p>
         </template>
 
-        <template slot-scope="{ item }">
+        <template v-slot:default="{ item }">
           <div class="product-row">
             <span>{{ item.name }}</span>
-            <!-- filter 管線再次出現 -->
-            <span class="price">{{ item.price | currency }}</span>
-            <!-- ⚠️ 遷移點：子元件對外事件；ProductRow 內部用 $listeners 透傳 -->
+            <span class="price">{{ formatCurrency(item.price) }}</span>
+            <!-- ✅ 遷移點 11：$listeners 已併入 $attrs，ProductRow 內部只需 v-bind="$attrs" -->
             <ProductRow :product="item" @add="addToCart(item.id)" />
           </div>
         </template>
@@ -32,6 +30,7 @@ import { mapActions } from 'vuex'
 import SearchBox from '../components/SearchBox.vue'
 import DataList from '../components/DataList.vue'
 import ProductRow from '../components/ProductRow.vue'
+import { formatCurrency } from '../utils/format'
 
 export default {
   name: 'ProductList',
@@ -42,7 +41,6 @@ export default {
     }
   },
   computed: {
-    // ⚠️ 遷移點：this.$store 仍可用，但 store 本身要從 vuex3 換成 vuex4/pinia
     filteredProducts() {
       const kw = this.keyword.trim().toLowerCase()
       return this.$store.state.products.filter(p =>
@@ -51,7 +49,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addToCart'])
+    ...mapActions(['addToCart']),
+    formatCurrency
   }
 }
 </script>

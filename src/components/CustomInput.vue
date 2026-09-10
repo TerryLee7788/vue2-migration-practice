@@ -1,11 +1,10 @@
 <template>
   <div class="custom-input">
     <label v-if="label">{{ label }}</label>
-    <!-- 內部固定用 checked prop + change 事件，由下方 model 選項對應 -->
     <input
       type="text"
-      :value="checked"
-      @change="$emit('change', $event.target.value)"
+      :value="modelValue"
+      @change="$emit('update:modelValue', $event.target.value)"
     />
   </div>
 </template>
@@ -13,17 +12,13 @@
 <script>
 export default {
   name: 'CustomInput',
-  // ⚠️ 遷移點：Vue 2 的 model 選項可自訂 v-model 對應的 prop / event
-  //    Vue 3 移除 model 選項，改用 v-model 綁 modelValue + update:modelValue，
-  //    或 v-model:foo 具名多重綁定
-  model: {
-    prop: 'checked',
-    event: 'change'
-  },
+  // ✅ 遷移點 12：Vue 2 的 model 選項移除，改用 modelValue prop
+  //    + update:modelValue 事件（v-model 的預設值）
   props: {
-    checked: { type: String, default: '' },
+    modelValue: { type: String, default: '' },
     label: { type: String, default: '' }
-  }
+  },
+  emits: ['update:modelValue']
 }
 </script>
 

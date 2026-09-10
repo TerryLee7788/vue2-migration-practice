@@ -2,16 +2,16 @@
   <div class="card">
     <h2>表單 / 自訂 v-model 示範</h2>
 
-    <!-- ⚠️ 遷移點：對自訂元件用 v-model，靠子元件的 model 選項 (checked/change)
-         Vue 3 要改成 modelValue / update:modelValue -->
+    <!-- ✅ 遷移點 12：CustomInput 已改用 modelValue/update:modelValue，
+         父層 v-model 寫法本身不變 -->
     <CustomInput v-model="name" label="姓名" />
     <CustomInput v-model="email" label="Email" />
 
-    <p>即時預覽：<strong>{{ name | uppercase }}</strong> &lt;{{ email }}&gt;</p>
+    <p>即時預覽：<strong>{{ upperName }}</strong> &lt;{{ email }}&gt;</p>
 
     <button @click="submit">送出</button>
 
-    <!-- ⚠️ 遷移點：<transition> 在 Vue 3 仍在，但 class 名稱 v-enter → v-enter-from -->
+    <!-- ✅ 遷移點 14：<transition> 仍在，class 名稱已改用 v-enter-from -->
     <transition name="fade">
       <p v-if="submitted" class="ok">已送出（僅前端示範）</p>
     </transition>
@@ -20,6 +20,7 @@
 
 <script>
 import CustomInput from '../components/CustomInput.vue'
+import { toUppercase } from '../utils/format'
 
 export default {
   name: 'FormDemo',
@@ -29,6 +30,11 @@ export default {
       name: '',
       email: '',
       submitted: false
+    }
+  },
+  computed: {
+    upperName() {
+      return toUppercase(this.name)
     }
   },
   methods: {
@@ -45,12 +51,12 @@ export default {
   color: #42b983;
   font-weight: 700;
 }
-/* ⚠️ 遷移點：v-enter / v-leave-to 的 v-enter 在 Vue 3 改名為 v-enter-from */
+/* ✅ 遷移點 14：v-enter 改名為 v-enter-from，v-leave-to 名稱不變 */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s;
 }
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }

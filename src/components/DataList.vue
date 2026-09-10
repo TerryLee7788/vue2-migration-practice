@@ -1,15 +1,15 @@
 <template>
   <div class="data-list">
-    <!-- ⚠️ 遷移點：具名插槽用 <slot name="empty">；
-         這裡沒問題，但父層的 slot="empty" 舊語法要改成 v-slot -->
+    <!-- ✅ 遷移點 10：具名插槽 <slot name="empty"> 本身不變，
+         父層已把 slot="empty" 改成 v-slot:empty -->
     <template v-if="!items.length">
       <slot name="empty">預設：沒有資料</slot>
     </template>
 
     <ul v-else>
       <li v-for="item in items" :key="item.id">
-        <!-- ⚠️ 遷移點：作用域插槽向父層傳資料
-             父層用 slot-scope 接收，Vue 3 改為 v-slot="{ item }" -->
+        <!-- ✅ 遷移點 10：作用域插槽本身不變，父層已把
+             slot-scope="{ item }" 改成 v-slot="{ item }" -->
         <slot :item="item">{{ item.name }}</slot>
       </li>
     </ul>

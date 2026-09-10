@@ -1,7 +1,7 @@
 <template>
   <div class="search-box">
-    <!-- ⚠️ 遷移點：透過 $emit('update:keyword') 搭配父層 .sync
-         Vue 3 改用 v-model:keyword，事件名不變但父層寫法變了 -->
+    <!-- ✅ 遷移點 9：$emit('update:keyword') 事件名不變，
+         父層已改用 v-model:keyword 取代 .sync -->
     <input
       v-focus
       :value="keyword"

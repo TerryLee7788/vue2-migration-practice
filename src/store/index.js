@@ -1,11 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
-// ⚠️ 遷移點：Vuex 3 需要 Vue.use(Vuex) + new Vuex.Store(...)
-//    Vue 3 要換成 Vuex 4 的 createStore(...)，或直接改用 Pinia
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
+// ✅ 遷移點 7：Vuex 4 用 createStore(...) 取代 Vue.use(Vuex) + new Vuex.Store(...)
+const store = createStore({
   state: {
     products: [
       { id: 1, name: '機械鍵盤', price: 2890 },
@@ -31,13 +27,12 @@ const store = new Vuex.Store({
   mutations: {
     ADD_TO_CART(state, productId) {
       const current = state.cart[productId] || 0
-      // ⚠️ 遷移點：Vue 2 對「新增物件屬性」不具響應性，必須用 Vue.set
-      //    Vue 3 的 Proxy 響應式讓 state.cart[productId] = n 直接就會更新
-      Vue.set(state.cart, productId, current + 1)
+      // ✅ 遷移點 8：Vue 3 的 Proxy 響應式讓直接賦值就有響應性，不再需要 Vue.set
+      state.cart[productId] = current + 1
     },
     REMOVE_FROM_CART(state, productId) {
-      // ⚠️ 遷移點：Vue 2 刪除屬性要用 Vue.delete；Vue 3 用 delete 即可
-      Vue.delete(state.cart, productId)
+      // ✅ 遷移點 8：直接用 delete，不再需要 Vue.delete
+      delete state.cart[productId]
     }
   },
   actions: {

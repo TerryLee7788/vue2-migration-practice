@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// ⚠️ 遷移點：mapGetters 來自 vuex 3，Vue 3 要換成 vuex 4 (createStore) 或 Pinia
+// ✅ 遷移點 7：mapGetters 用法不變，store 已改用 vuex 4 的 createStore
 import { mapGetters } from 'vuex'
 
 export default {
