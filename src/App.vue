@@ -1,20 +1,20 @@
 <template>
-  <div id="app">
-    <header class="topbar">
-      <h1>Vue 2 → Vue 3 遷移練習場</h1>
+  <div id="app" class="min-h-screen bg-[#f5f6f8] font-sans text-[#2c3e50]">
+    <header class="bg-[#35495e] px-6 py-4 text-white">
+      <h1 class="mb-3 text-xl">Vue 2 → Vue 3 遷移練習場</h1>
       <nav>
-        <router-link to="/">首頁</router-link>
-        <router-link to="/products">商品</router-link>
-        <router-link to="/cart">購物車 ({{ cartCount }})</router-link>
-        <router-link to="/form">表單</router-link>
+        <router-link to="/" class="nav-link" exact-active-class="text-[#42b983]">首頁</router-link>
+        <router-link to="/products" class="nav-link" exact-active-class="text-[#42b983]">商品</router-link>
+        <router-link to="/cart" class="nav-link" exact-active-class="text-[#42b983]">購物車 ({{ cartCount }})</router-link>
+        <router-link to="/form" class="nav-link" exact-active-class="text-[#42b983]">表單</router-link>
       </nav>
     </header>
 
-    <main class="content">
+    <main class="mx-auto max-w-215 px-4 py-6">
       <router-view />
     </main>
 
-    <footer class="footer">
+    <footer class="p-6 text-center text-[#8a94a6]">
       <small>每個元件的註解都標了「遷移點」，練習時可以逐一改成 Vue 3 寫法。</small>
     </footer>
   </div>
@@ -31,60 +31,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body {
-  margin: 0;
-  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
-  color: #2c3e50;
-  background: #f5f6f8;
-}
-.topbar {
-  background: #35495e;
-  color: #fff;
-  padding: 16px 24px;
-}
-.topbar h1 {
-  margin: 0 0 12px;
-  font-size: 20px;
-}
-.topbar nav a {
-  color: #b0c4de;
-  margin-right: 16px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.topbar nav a.router-link-exact-active {
-  color: #42b983;
-}
-.content {
-  max-width: 860px;
-  margin: 24px auto;
-  padding: 0 16px;
-}
-.footer {
-  text-align: center;
-  color: #8a94a6;
-  padding: 24px;
-}
-.card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  margin-bottom: 16px;
-}
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 14px;
-  background: #42b983;
-  color: #fff;
-  font-weight: 600;
-}
-button.ghost {
-  background: #e5e9f0;
-  color: #35495e;
-}
-</style>

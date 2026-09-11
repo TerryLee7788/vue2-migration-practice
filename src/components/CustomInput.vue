@@ -1,8 +1,9 @@
 <template>
-  <div class="custom-input">
-    <label v-if="label">{{ label }}</label>
+  <div class="mb-3">
+    <label v-if="label" class="mb-1 block text-[13px] text-[#6b7280]">{{ label }}</label>
     <input
       type="text"
+      class="field-input mb-0"
       :value="modelValue"
       @change="$emit('update:modelValue', $event.target.value)"
     />
@@ -21,22 +22,3 @@ export default {
   emits: ['update:modelValue']
 }
 </script>
-
-<style scoped>
-.custom-input {
-  margin-bottom: 12px;
-}
-.custom-input label {
-  display: block;
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 4px;
-}
-.custom-input input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 12px;
-  border: 1px solid #d5dae2;
-  border-radius: 6px;
-}
-</style>

@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* 這裡收斂在多個元件重複出現的視覺樣式（card 容器、主要/次要按鈕、輸入框），
+   避免同一串 utility class 在 Home/ProductList/Cart/FormDemo 裡各貼一次。
+   其餘一次性的排版還是直接寫在 template 的 class 上。 */
+@layer components {
+  .card {
+    @apply mb-4 rounded-[10px] bg-white p-5 shadow-sm;
+  }
+
+  .btn {
+    @apply cursor-pointer rounded-md border-none bg-[#42b983] px-3.5 py-2 font-semibold text-white transition-colors hover:bg-[#3aa876];
+  }
+
+  .btn-ghost {
+    @apply bg-[#e5e9f0] text-[#35495e] hover:bg-[#d8deea];
+  }
+
+  .field-input {
+    @apply mb-3 box-border w-full rounded-md border border-[#d5dae2] px-3 py-2.5 text-sm;
+  }
+
+  .nav-link {
+    @apply mr-4 font-semibold text-[#b0c4de] no-underline;
+  }
+}

@@ -1,7 +1,7 @@
 <template>
   <!-- ✅ 遷移點 11：$listeners 已併入 $attrs，移除 v-on="$listeners"，
        只需 v-bind="$attrs" -->
-  <button class="ghost" v-bind="$attrs" @click="onClick">
+  <button class="btn btn-ghost" v-bind="$attrs" @click="onClick">
     加入購物車
   </button>
 </template>

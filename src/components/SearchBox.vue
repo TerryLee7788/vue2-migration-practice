@@ -1,9 +1,10 @@
 <template>
-  <div class="search-box">
+  <div>
     <!-- ✅ 遷移點 9：$emit('update:keyword') 事件名不變，
          父層已改用 v-model:keyword 取代 .sync -->
     <input
       v-focus
+      class="field-input"
       :value="keyword"
       :placeholder="placeholder"
       @input="$emit('update:keyword', $event.target.value)"
@@ -20,15 +21,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.search-box input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 12px;
-  border: 1px solid #d5dae2;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-</style>
