@@ -12,6 +12,8 @@
 - mitt（取代 Vue 2 的空 Vue 實例 Event Bus）
 - Tailwind CSS 4（`@tailwindcss/vite`，樣式集中在 `src/style.css`，重複的視覺樣式
   用 `@layer components` 收斂成 `.card` / `.btn` / `.btn-ghost` / `.field-input` / `.nav-link`）
+- vee-validate（`FormDemo.vue` 的表單驗證，用 `<Form>`/`<Field>` 元件 + 一般驗證函式，
+  不需要 Composition API 也能在 Options API 下使用）
 
 ## 啟動
 ```bash
