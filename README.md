@@ -23,6 +23,24 @@ npm run dev      # http://localhost:8080
 npm run build    # 打包到 dist/
 ```
 
+## AI 開發同事（自動遷移工具，練習用、尚未實際驗證）
+`scripts/ai-colleague/migrate-component.js` 是一個會呼叫 Claude API、動手改程式碼的小工具，
+不是網頁上的聊天機器人——它會讀取 `CLAUDE.md` 跟 `.claude/skills/vue3-frontend-conventions/SKILL.md`
+的內容當作規則，把指定的 Options API 元件改寫成 Composition API `<script setup>`。
+**這支腳本本身尚未實際帶 API key 跑過**，行為未經驗證。
+
+```bash
+# 先設定 API 金鑰（擇一）：
+export ANTHROPIC_API_KEY=sk-ant-...           # 直接匯出環境變數
+echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env.local   # 或建立 .env.local（已加進 .gitignore，指令會自動載入）
+
+# 預覽改寫結果（只印出 diff，不動檔案）
+npm run ai:migrate -- src/components/ProductRow.vue
+
+# 確認沒問題後才真的寫回檔案
+npm run ai:migrate -- src/components/ProductRow.vue --apply
+```
+
 ## 頁面與對應練習點
 | 路由 | 檔案 | 練習主題 |
 | --- | --- | --- |

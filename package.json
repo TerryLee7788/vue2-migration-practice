@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "ai:migrate": "node --env-file-if-exists=.env.local scripts/ai-colleague/migrate-component.js",
+    "ai:chat": "node --env-file-if-exists=.env.local scripts/ai-colleague/agent.js"
   },
   "dependencies": {
     "mitt": "^3.0.1",
@@ -16,8 +18,10 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.125.0",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-vue": "^6.0.8",
+    "diff": "^9.0.0",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.0"
   }
