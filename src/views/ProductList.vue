@@ -25,13 +25,30 @@
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script setup>
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import SearchBox from '../components/SearchBox.vue'
 import DataList from '../components/DataList.vue'
 import ProductRow from '../components/ProductRow.vue'
 import { formatCurrency } from '../utils/format'
 
+// ✅ 遷移點 7：mapActions（Options API）改成 useStore() + store.dispatch（Composition API）
+const store = useStore()
+
+const keyword = ref('')
+const filteredProducts = computed(() => {
+  const kw = keyword.value.trim().toLowerCase()
+  return store.state.products.filter(p =>
+    p.name.toLowerCase().includes(kw)
+  )
+})
+
+function addToCart(productId) {
+  store.dispatch('addToCart', productId)
+}
+
+/*
 export default {
   name: 'ProductList',
   components: { SearchBox, DataList, ProductRow },
@@ -53,4 +70,5 @@ export default {
     formatCurrency
   }
 }
+*/
 </script>

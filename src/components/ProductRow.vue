@@ -6,19 +6,18 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: 'ProductRow',
-  inheritAttrs: false,
-  props: {
-    product: { type: Object, required: true }
-  },
-  // 宣告 emits，避免 @add 監聽器被當成一般屬性落入 $attrs
-  emits: ['add'],
-  methods: {
-    onClick() {
-      this.$emit('add', this.product.id)
-    }
-  }
+<script setup>
+// ✅ 遷移點 11：defineOptions({ inheritAttrs: false }) + defineEmits(['add'])
+//    取代 Options API 的 inheritAttrs: false + emits: ['add']，
+//    宣告在 defineEmits 的事件才不會落入 $attrs
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps({
+  product: { type: Object, required: true }
+})
+const emit = defineEmits(['add'])
+
+function onClick() {
+  emit('add', props.product.id)
 }
 </script>

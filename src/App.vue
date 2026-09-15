@@ -17,17 +17,40 @@
     <footer class="p-6 text-center text-[#8a94a6]">
       <small>每個元件的註解都標了「遷移點」，練習時可以逐一改成 Vue 3 寫法。</small>
     </footer>
+
+    <!-- ✅ EventBus 真正的用途示範：ProductList 加入購物車（透過 store action）時 emit，
+         App 這個跟它沒有父子關係的元件監聽並顯示 toast。堆疊 + 滑入滑出的視覺邏輯抽成
+         共用的 StackedToast（DRY：跟 Home.vue 的 ping 推播共用同一套動畫實作） -->
+    <StackedToast :items="toasts" position="bottom" />
   </div>
 </template>
 
-<script>
-// ✅ 遷移點 7：mapGetters 用法不變，store 已改用 vuex 4 的 createStore
-import { mapGetters } from 'vuex'
+<script setup>
+import { computed, ref, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { EventBus } from './eventBus'
+import StackedToast from './components/StackedToast.vue'
 
-export default {
-  name: 'App',
-  computed: {
-    ...mapGetters(['cartCount'])
-  }
+// ✅ 遷移點 7：mapGetters（Options API）改成 useStore() + computed（Composition API）
+const store = useStore()
+const cartCount = computed(() => store.getters.cartCount)
+
+// 用陣列（而不是單一字串）存目前顯示中的 toast，讓連續觸發時是「疊加一則新的」，
+// 每則各自用自己的 timer 到期移除，不會互相打斷
+const toasts = ref([])
+let toastSeq = 0
+
+function onCartAdd(productName) {
+  const id = ++toastSeq
+  toasts.value.push({ id, text: `已加入購物車：${productName}` })
+  setTimeout(() => {
+    toasts.value = toasts.value.filter(t => t.id !== id)
+  }, 2000)
 }
+
+EventBus.on('cart:add', onCartAdd)
+
+onBeforeUnmount(() => {
+  EventBus.off('cart:add', onCartAdd)
+})
 </script>

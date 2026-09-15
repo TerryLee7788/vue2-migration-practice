@@ -4,21 +4,16 @@
     <input
       type="text"
       class="field-input mb-0"
-      :value="modelValue"
-      @change="$emit('update:modelValue', $event.target.value)"
+      v-model.lazy="modelValue"
     />
   </div>
 </template>
 
-<script>
-export default {
-  name: 'CustomInput',
-  // ✅ 遷移點 12：Vue 2 的 model 選項移除，改用 modelValue prop
-  //    + update:modelValue 事件（v-model 的預設值）
-  props: {
-    modelValue: { type: String, default: '' },
-    label: { type: String, default: '' }
-  },
-  emits: ['update:modelValue']
-}
+<script setup>
+// ✅ 遷移點 12：Vue 2 的 model 選項移除，改用 defineModel() 巨集
+//    （取代 Options API 寫法的 modelValue prop + update:modelValue 事件）
+defineProps({
+  label: { type: String, default: '' }
+})
+const modelValue = defineModel({ type: String, default: '' })
 </script>

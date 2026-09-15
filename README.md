@@ -5,7 +5,8 @@
 `main` 分支保留原始 Vue 2 + Webpack baseline，方便對照練習。
 
 ## 技術棧
-- Vue **3.5.x**（Options API）
+- Vue **3.5.x**（遷移目標為 Composition API `<script setup>`；部分檔案仍是過渡期的 Options API
+  版本，尚待轉換）
 - Vue Router **4.x**
 - Vuex **4.x**
 - Vite 8 + @vitejs/plugin-vue（無 TS）
@@ -13,7 +14,7 @@
 - Tailwind CSS 4（`@tailwindcss/vite`，樣式集中在 `src/style.css`，重複的視覺樣式
   用 `@layer components` 收斂成 `.card` / `.btn` / `.btn-ghost` / `.field-input` / `.nav-link`）
 - vee-validate（`FormDemo.vue` 的表單驗證，用 `<Form>`/`<Field>` 元件 + 一般驗證函式，
-  不需要 Composition API 也能在 Options API 下使用）
+  Options API、Composition API 下都能用）
 
 ## 啟動
 ```bash
@@ -37,7 +38,7 @@ npm run build    # 打包到 dist/
 | 1 | `new Vue({...}).$mount('#app')` | `createApp(App).use(...).mount('#app')` | `main.js` |
 | 2 | `Vue.filter(...)` + 模板 `{{ x \| f }}` | 移除 filters，改用 `utils/format.js` + computed / method | `main.js`, 各 view |
 | 3 | `Vue.directive` 的 `bind/inserted/update` | 改名 `beforeMount/mounted/updated` 等 | `main.js` |
-| 4 | `Vue.mixin(...)` 掛全域 | `app.mixin(...)` | `main.js` |
+| 4 | `Vue.mixin(...)` 掛全域 | 先過渡成 `app.mixin(...)`，再進一步改寫成 composable（`useLogger()`） | `main.js`, `composables/useLogger.js` |
 | 5 | Event Bus：`new Vue()` + `$on/$off/$emit` | 改用 `mitt`（`src/eventBus.js`） | `main.js`, `Home.vue` |
 | 6 | `Vue.use(Router)` + `new VueRouter({ mode:'history' })` | `createRouter({ history: createWebHistory() })` | `router/index.js` |
 | 7 | `Vue.use(Vuex)` + `new Vuex.Store()` | `createStore()` | `store/index.js` |
@@ -45,7 +46,7 @@ npm run build    # 打包到 dist/
 | 9 | `.sync` 修飾詞 | `v-model:propName` | `ProductList.vue`, `SearchBox.vue` |
 | 10 | `slot="name"` / `slot-scope="{}"` | `v-slot:name="{}"` | `ProductList.vue`, `DataList.vue` |
 | 11 | `v-on="$listeners"` / `$listeners` | `$listeners` 併入 `$attrs`，只用 `v-bind="$attrs"` + `emits` | `ProductRow.vue` |
-| 12 | 自訂 v-model 的 `model: { prop, event }` | `modelValue` + `update:modelValue` | `CustomInput.vue`, `FormDemo.vue` |
+| 12 | 自訂 v-model 的 `model: { prop, event }` | `defineModel()` 巨集（取代手動宣告 `modelValue` + `update:modelValue`） | `CustomInput.vue`, `FormDemo.vue` |
 | 13 | `beforeDestroy` / `destroyed` | `beforeUnmount` / `unmounted` | `Home.vue` |
 | 14 | `<transition>` 的 `v-enter` / `v-leave` | `v-enter-from` / `v-leave-from` | `FormDemo.vue` |
 

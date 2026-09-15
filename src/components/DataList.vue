@@ -16,11 +16,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'DataList',
-  props: {
-    items: { type: Array, default: () => [] }
-  }
-}
+<script setup>
+defineProps({
+  items: { type: Array, default: () => [] }
+})
 </script>

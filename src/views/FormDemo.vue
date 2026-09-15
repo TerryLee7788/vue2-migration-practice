@@ -27,16 +27,20 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // ✅ 新增：表單驗證改用 vee-validate 的 <Form>/<Field> 元件。
-//    這兩個元件可以直接在 template 用、規則用一般函式傳入，
-//    不需要 setup() 或 useForm/useField，跟這個專案「只用 Options API」的慣例相容。
-//    姓名/Email 同時 v-model 在 <Field> 和 CustomInput 上、綁同一個 data 屬性，
+//    這兩個元件可以直接在 template 用、規則用一般函式傳入，不需要 useForm/useField。
+//    姓名/Email 同時 v-model 在 <Field> 和 CustomInput 上、綁同一個 ref，
 //    讓 Field 能追蹤到 CustomInput（透過 modelValue/update:modelValue）產生的變化並觸發驗證，
 //    同時保留原本 CustomInput 的自訂 v-model 遷移示範不必更動。
+import { ref, computed } from 'vue'
 import { Form, Field } from 'vee-validate'
 import CustomInput from '../components/CustomInput.vue'
 import { toUppercase } from '../utils/format'
+import { useLogger } from '../composables/useLogger'
+
+// ✅ 遷移點 4：$log 已從全域 mixin 改寫成 composable，<script setup> 裡沒有 this，直接 import 使用
+const { log } = useLogger()
 
 function requiredRule(value) {
   return (value && String(value).trim().length > 0) || '此欄位為必填'
@@ -48,29 +52,15 @@ function emailRule(value) {
   return pattern.test(value) || 'Email 格式不正確'
 }
 
-export default {
-  name: 'FormDemo',
-  components: { Form, Field, CustomInput },
-  data() {
-    return {
-      name: '',
-      email: '',
-      submitted: false,
-      requiredRule,
-      emailRule
-    }
-  },
-  computed: {
-    upperName() {
-      return toUppercase(this.name)
-    }
-  },
-  methods: {
-    submit() {
-      this.submitted = true
-      this.$log('form submitted: ' + this.name)
-    }
-  }
+const name = ref('')
+const email = ref('')
+const submitted = ref(false)
+
+const upperName = computed(() => toUppercase(name.value))
+
+function submit() {
+  submitted.value = true
+  log('form submitted: ' + name.value)
 }
 </script>
 

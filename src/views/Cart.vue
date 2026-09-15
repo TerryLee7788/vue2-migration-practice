@@ -9,7 +9,7 @@
       <li
         v-for="item in cartItems"
         :key="item.id"
-        class="flex items-center justify-between gap-3 border-b border-[#eef0f4] py-2.5"
+        class="grid grid-cols-[1fr_1fr_auto] items-center justify-between gap-3 border-b border-[#eef0f4] py-2.5"
       >
         <span>{{ item.name }} × {{ item.qty }}</span>
         <span>{{ formatCurrency(item.price * item.qty) }}</span>
@@ -21,10 +21,20 @@
   </div>
 </template>
 
-<script>
-import { mapGetters, mapActions } from 'vuex'
+<script setup>
+import { useStore } from 'vuex'
 import { formatCurrency } from '../utils/format'
+import { computed } from 'vue'
 
+const store = useStore()
+const cartItems = computed(() => store.getters.cartItems)
+const cartTotal = computed(() => store.getters.cartTotal)
+
+function removeFromCart(productId) {
+  store.dispatch('removeFromCart', productId)
+}
+
+/*
 export default {
   name: 'Cart',
   computed: {
@@ -35,4 +45,5 @@ export default {
     formatCurrency
   }
 }
+*/
 </script>

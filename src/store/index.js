@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import { EventBus } from '../eventBus'
 
 // ✅ 遷移點 7：Vuex 4 用 createStore(...) 取代 Vue.use(Vuex) + new Vuex.Store(...)
 const store = createStore({
@@ -36,8 +37,13 @@ const store = createStore({
     }
   },
   actions: {
-    addToCart({ commit }, productId) {
+    addToCart({ commit, state }, productId) {
       commit('ADD_TO_CART', productId)
+      // ✅ EventBus 真正的用途：這裡跟顯示 toast 的 App.vue 沒有父子關係，
+      // 用 props/emit 傳不過去，把「一次性通知」塞進 Vuex state 又要多處理「顯示完要自己清掉」，
+      // 這種純通知、不需要長期共享狀態的情境，用 event bus 廣播比較合適
+      const product = state.products.find(p => p.id === productId)
+      if (product) EventBus.emit('cart:add', product.name)
     },
     removeFromCart({ commit }, productId) {
       commit('REMOVE_FROM_CART', productId)
