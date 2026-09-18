@@ -19,7 +19,7 @@ const MODEL = 'claude-sonnet-5'
 
 function printUsage() {
   console.error('用法：npm run ai:migrate -- <元件路徑> [--apply]')
-  console.error('範例：npm run ai:migrate -- src/components/ProductRow.vue --apply')
+  console.error('範例：npm run ai:migrate -- src/views/ProductList/components/ProductRow.vue --apply')
 }
 
 function stripCodeFence(text) {

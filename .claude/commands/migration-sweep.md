@@ -1,7 +1,7 @@
 ---
 allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(npm run build:*), Grep(*), Glob(*), Read(*), Agent
 description: 每輪遷移掃描——找出還沒轉成 Composition API 的檔案，依序交給 frontend-migrator / state-architect / qa-reviewer / ui-agent / docs-sync 處理，並把結果寫進執行紀錄。不會自動 commit / push。
-argument-hint: [可選：指定只處理某個檔案，例如 src/components/CustomInput.vue]
+argument-hint: [可選：指定只處理某個檔案，例如 src/views/FormDemo/components/CustomInput.vue]
 ---
 
 ## Context（先蒐集現況，不要用記憶或猜測）

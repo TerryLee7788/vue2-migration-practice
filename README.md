@@ -35,19 +35,20 @@ export ANTHROPIC_API_KEY=sk-ant-...           # 直接匯出環境變數
 echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env.local   # 或建立 .env.local（已加進 .gitignore，指令會自動載入）
 
 # 預覽改寫結果（只印出 diff，不動檔案）
-npm run ai:migrate -- src/components/ProductRow.vue
+npm run ai:migrate -- src/views/ProductList/components/ProductRow.vue
 
 # 確認沒問題後才真的寫回檔案
-npm run ai:migrate -- src/components/ProductRow.vue --apply
+npm run ai:migrate -- src/views/ProductList/components/ProductRow.vue --apply
 ```
 
 ## 頁面與對應練習點
 | 路由 | 檔案 | 練習主題 |
 | --- | --- | --- |
 | `/` | `views/Home.vue` | filters、Event Bus、`beforeDestroy` |
-| `/products` | `views/ProductList.vue` | `.sync`、`slot-scope`、具名插槽、`$listeners` |
+| `/products` | `views/ProductList/ProductList.vue` | `.sync`、`slot-scope`、具名插槽、`$listeners` |
 | `/cart` | `views/Cart.vue` | Vuex getters/actions、filter |
-| `/form` | `views/FormDemo.vue` | 自訂 `v-model`（`model` 選項）、`<transition>` class |
+| `/form` | `views/FormDemo/FormDemo.vue` | 自訂 `v-model`（`model` 選項）、`<transition>` class |
+| `/quote` | `views/Quote/Quote.vue` | 多步驟表單跨元件共享狀態（Vuex）、v-if 切換元件卸載重掛時的資料保留 |
 
 ## 遷移對照 checklist（已全部完成）
 

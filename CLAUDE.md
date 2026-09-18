@@ -41,18 +41,26 @@ There is no lint/test/typecheck script configured — this is a practice app, no
 - `src/utils/format.js` — plain functions (`formatCurrency`, `toUppercase`) replace Vue 2 global
   filters, which were removed in Vue 3. Components call these from `computed` or `methods`
   instead of using the `{{ value | filter }}` template syntax.
-- `src/router/index.js` — `createRouter({ history: createWebHistory(), routes })`, four routes:
-  `/` (Home), `/products` (ProductList), `/cart` (Cart), `/form` (FormDemo).
-- `src/store/index.js` — a single Vuex 4 `createStore()` with `products`/`cart` state,
-  `cartCount`/`cartItems`/`cartTotal` getters, and `ADD_TO_CART`/`REMOVE_FROM_CART` mutations.
-  Cart mutations rely on Vue 3's Proxy-based reactivity (direct property assignment/`delete`)
-  rather than `Vue.set`/`Vue.delete`.
-- Components under `src/components/` each demonstrate one specific API-surface change:
-  `ProductRow.vue` (`$listeners` merged into `$attrs`, explicit `emits`), `CustomInput.vue`
-  (custom `v-model` via `modelValue`/`update:modelValue` instead of the `model` option),
-  `DataList.vue` (named/scoped slots consumed with `v-slot`).
+- `src/router/index.js` — `createRouter({ history: createWebHistory(), routes })`, five routes:
+  `/` (Home), `/products` (ProductList), `/cart` (Cart), `/form` (FormDemo), `/quote` (Quote).
+- `src/store/index.js` — a single Vuex 4 `createStore()` with `products`/`cart`/`quote` state,
+  `cartCount`/`cartItems`/`cartTotal`/`quoteSelectedPlan`/`quoteEstimate` getters, and mutations
+  for both the cart (`ADD_TO_CART`/`REMOVE_FROM_CART`) and the `/quote` wizard
+  (`SET_QUOTE_PLAN`/`SET_QUOTE_BASIC_INFO`/`RESET_QUOTE`). Cart mutations rely on Vue 3's
+  Proxy-based reactivity (direct property assignment/`delete`) rather than `Vue.set`/`Vue.delete`.
 - Views under `src/views/` are the pages wired into the router; each one is the practice ground
-  for a cluster of migration points (see the README table for the exact mapping).
+  for a cluster of migration points (see the README table for the exact mapping). A view that
+  needs its own child components (e.g. `ProductList/`, `FormDemo/`, `Quote/`) is a folder
+  containing the view file plus a `components/` subfolder for components only that view uses
+  (e.g. `views/Quote/components/QuoteStep1Plan.vue`) — see "Component placement" below.
+- `src/components/` holds only genuinely cross-view components — currently just
+  `StackedToast.vue` (used by both `App.vue` and `Home.vue`). Don't add a component here unless
+  it's actually used from more than one view.
+- `src/style.css` defines the Tailwind v4 design system: a `@theme` block of semantic color
+  tokens (`--color-brand`, `--color-ink`, `--color-surface`, `--color-border`, etc.) that Tailwind
+  turns into utilities (`bg-brand`, `text-ink`, ...), plus the shared `@layer components` classes
+  (`.card`, `.btn`, `.btn-ghost`, `.field-input`, `.nav-link`). See "Component placement" below
+  for the rule this enforces.
 
 ## Working conventions for this repo
 
@@ -73,3 +81,19 @@ There is no lint/test/typecheck script configured — this is a practice app, no
 - Build tooling was migrated from Webpack 5 to Vite (`webpack.config.js`/`.babelrc` removed,
   `vite.config.js` added, `public/index.html` moved to project-root `index.html` with a
   `<script type="module" src="/src/main.js">` entry). Don't reintroduce Webpack config.
+- **Colors**: never hardcode a hex value in a `class="..."` (no `text-[#42b983]`) or in a
+  `<style>` block. Use the semantic Tailwind utilities generated from the `@theme` tokens in
+  `src/style.css` (`bg-brand`, `text-ink`, `border-border`, ...), or `var(--color-brand)` etc. in
+  scoped CSS. Need a color that has no token yet? Add it to the `@theme` block first, don't
+  reach for an arbitrary-value class.
+- **Component placement**: `src/components/` is only for components used from more than one
+  view. A component only one view uses belongs under that view's own folder, e.g.
+  `src/views/Quote/components/QuoteStep1Plan.vue`, not `src/components/`. If a flat
+  `src/views/Foo.vue` grows a component only it needs, turn it into `src/views/Foo/Foo.vue` +
+  `src/views/Foo/components/...` rather than dropping the new component into `src/components/`.
+- **Imports**: use the `@` alias (`resolve.alias` in `vite.config.js`, mapped to `src/`, and
+  mirrored in `jsconfig.json` for editor tooling) for anything that reaches outside a file's own
+  folder — `@/utils/format`, `@/store`, `@/composables/useLogger`, `@/components/StackedToast.vue`.
+  Only use a relative import (`./...`) for a same-folder or child-folder file, e.g. a view
+  importing its own `./components/Xxx.vue`. Don't write `../../` or deeper — that's what the
+  alias replaces.
