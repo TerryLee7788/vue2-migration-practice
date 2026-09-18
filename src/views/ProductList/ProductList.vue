@@ -9,13 +9,13 @@
       <!-- ✅ 遷移點 10：具名 / 作用域插槽統一改成 v-slot -->
       <DataList :items="filteredProducts">
         <template v-slot:empty>
-          <p class="text-[#8a94a6]">找不到符合「{{ keyword }}」的商品。</p>
+          <p class="text-subtle">找不到符合「{{ keyword }}」的商品。</p>
         </template>
 
         <template v-slot:default="{ item }">
-          <div class="grid items-center grid-cols-[1fr_1fr_auto] gap-3 border-b border-[#eef0f4] py-2.5">
+          <div class="grid items-center grid-cols-[1fr_1fr_auto] gap-3 border-b border-border py-2.5">
             <span>{{ item.name }}</span>
-            <span class="font-bold text-[#42b983]">{{ formatCurrency(item.price) }}</span>
+            <span class="font-bold text-brand">{{ formatCurrency(item.price) }}</span>
             <!-- ✅ 遷移點 11：$listeners 已併入 $attrs，ProductRow 內部只需 v-bind="$attrs" -->
             <ProductRow :product="item" @add="addToCart(item.id)" />
           </div>
@@ -28,10 +28,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import SearchBox from '../components/SearchBox.vue'
-import DataList from '../components/DataList.vue'
-import ProductRow from '../components/ProductRow.vue'
-import { formatCurrency } from '../utils/format'
+import SearchBox from './components/SearchBox.vue'
+import DataList from './components/DataList.vue'
+import ProductRow from './components/ProductRow.vue'
+import { formatCurrency } from '@/utils/format'
 
 // ✅ 遷移點 7：mapActions（Options API）改成 useStore() + store.dispatch（Composition API）
 const store = useStore()

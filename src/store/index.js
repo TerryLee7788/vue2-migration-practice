@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
-import { EventBus } from '../eventBus'
+import { EventBus } from '@/eventBus'
+import { calculateEstimate } from '@/utils/quote'
 
 // ✅ 遷移點 7：Vuex 4 用 createStore(...) 取代 Vue.use(Vuex) + new Vuex.Store(...)
 const store = createStore({
@@ -7,10 +8,24 @@ const store = createStore({
     products: [
       { id: 1, name: '機械鍵盤', price: 2890 },
       { id: 2, name: '人體工學滑鼠', price: 1290 },
-      { id: 3, name: '4K 螢幕', price: 8990 }
+      { id: 3, name: '4K 螢幕', price: 8990 },
+      { id: 4, name: '4K 螢幕2', price: 18990 }
     ],
     // cart: { [productId]: quantity }
-    cart: {}
+    cart: {},
+    // 多步驟試算（/quote）用的共用狀態：選了哪個方案、填了哪些基本資料。
+    // 放進 store 而不是留在某一步驟元件自己的 data 裡，是因為 Step1/2/3 用 v-if
+    // 切換時元件會整個卸載重新掛載，區域 state 會被清空——放 store 才能讓使用者
+    // 在任一步驟點「上一步」時，已經填好（甚至填到一半）的資料還在。
+    quote: {
+      plans: [
+        { id: 'basic', name: '基本方案', monthlyRate: 300, desc: '基礎意外保障' },
+        { id: 'standard', name: '標準方案', monthlyRate: 600, desc: '意外＋醫療保障' },
+        { id: 'premium', name: '尊爵方案', monthlyRate: 1200, desc: '全方位保障＋海外醫療' }
+      ],
+      selectedPlanId: null,
+      basicInfo: { name: '', birthday: '', gender: '' }
+    }
   },
   getters: {
     cartCount(state) {
@@ -23,6 +38,12 @@ const store = createStore({
     },
     cartTotal(state, getters) {
       return getters.cartItems.reduce((sum, i) => sum + i.price * i.qty, 0)
+    },
+    quoteSelectedPlan(state) {
+      return state.quote.plans.find(p => p.id === state.quote.selectedPlanId) || null
+    },
+    quoteEstimate(state, getters) {
+      return calculateEstimate(getters.quoteSelectedPlan, state.quote.basicInfo)
     }
   },
   mutations: {
@@ -34,6 +55,16 @@ const store = createStore({
     REMOVE_FROM_CART(state, productId) {
       // ✅ 遷移點 8：直接用 delete，不再需要 Vue.delete
       delete state.cart[productId]
+    },
+    SET_QUOTE_PLAN(state, planId) {
+      state.quote.selectedPlanId = planId
+    },
+    SET_QUOTE_BASIC_INFO(state, partialInfo) {
+      Object.assign(state.quote.basicInfo, partialInfo)
+    },
+    RESET_QUOTE(state) {
+      state.quote.selectedPlanId = null
+      state.quote.basicInfo = { name: '', birthday: '', gender: '' }
     }
   },
   actions: {
@@ -47,6 +78,15 @@ const store = createStore({
     },
     removeFromCart({ commit }, productId) {
       commit('REMOVE_FROM_CART', productId)
+    },
+    setQuotePlan({ commit }, planId) {
+      commit('SET_QUOTE_PLAN', planId)
+    },
+    setQuoteBasicInfo({ commit }, partialInfo) {
+      commit('SET_QUOTE_BASIC_INFO', partialInfo)
+    },
+    resetQuote({ commit }) {
+      commit('RESET_QUOTE')
     }
   }
 })

@@ -24,10 +24,10 @@
 <script setup>
 // ⚠️ Composition API 版本
 import { ref, computed, onBeforeUnmount } from 'vue'
-import { formatCurrency, toUppercase } from '../utils/format'
-import { EventBus } from '../eventBus'
-import { useLogger } from '../composables/useLogger'
-import StackedToast from '../components/StackedToast.vue'
+import { formatCurrency, toUppercase } from '@/utils/format'
+import { EventBus } from '@/eventBus'
+import { useLogger } from '@/composables/useLogger'
+import StackedToast from '@/components/StackedToast.vue'
 
 // $bus 本身就是 main.js 掛在 globalProperties 上的同一個 mitt 實例，setup 裡可以直接 import 用
 // $log（遷移點 4）已經從全域 mixin 改寫成 composable，直接 import useLogger() 取用即可

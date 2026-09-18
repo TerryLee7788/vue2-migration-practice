@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+/* 設計系統：把散落各元件的 text-[#xxxxxx] 隨手色碼收斂成固定的語意 token。
+   品牌色沿用 Vue 2 經典配色（綠 #42b983 + 深藍灰 #35495e），其餘文字/邊框/表面色階
+   也都只留一份，不要在新元件裡再手打 hex，新增顏色需求就在這裡加 token，
+   讓整個 app 的色彩維持同一套來源（Tailwind v4 用 @theme 宣告後會自動產生對應的
+   utility class，例如 --color-brand 會生出 bg-brand / text-brand / border-brand）。 */
+@theme {
+  --color-brand: #42b983;
+  --color-brand-hover: #3aa876;
+  --color-brand-soft: #eafaf3;
+  --color-brand-dark: #35495e;
+
+  --color-ink: #2c3e50;
+  --color-secondary: #6b7280;
+  --color-subtle: #8a94a6;
+  --color-nav-link: #b0c4de;
+
+  --color-surface: #f5f6f8;
+  --color-surface-muted: #e5e9f0;
+  --color-surface-muted-hover: #d8deea;
+
+  --color-border: #eef0f4;
+  --color-border-input: #d5dae2;
+}
+
 /* 這裡收斂在多個元件重複出現的視覺樣式（card 容器、主要/次要按鈕、輸入框），
    避免同一串 utility class 在 Home/ProductList/Cart/FormDemo 裡各貼一次。
    其餘一次性的排版還是直接寫在 template 的 class 上。 */
@@ -9,18 +33,18 @@
   }
 
   .btn {
-    @apply cursor-pointer rounded-md border-none bg-[#42b983] px-3.5 py-2 font-semibold text-white transition-colors hover:bg-[#3aa876];
+    @apply cursor-pointer rounded-md border-none bg-brand px-3.5 py-2 font-semibold text-white transition-colors hover:bg-brand-hover;
   }
 
   .btn-ghost {
-    @apply bg-[#e5e9f0] text-[#35495e] hover:bg-[#d8deea];
+    @apply bg-surface-muted text-brand-dark hover:bg-surface-muted-hover;
   }
 
   .field-input {
-    @apply mb-3 box-border w-full rounded-md border border-[#d5dae2] px-3 py-2.5 text-sm;
+    @apply mb-3 box-border w-full rounded-md border border-border-input px-3 py-2.5 text-sm;
   }
 
   .nav-link {
-    @apply mr-4 font-semibold text-[#b0c4de] no-underline;
+    @apply mr-4 font-semibold text-nav-link no-underline;
   }
 }

@@ -35,9 +35,9 @@
 //    同時保留原本 CustomInput 的自訂 v-model 遷移示範不必更動。
 import { ref, computed } from 'vue'
 import { Form, Field } from 'vee-validate'
-import CustomInput from '../components/CustomInput.vue'
-import { toUppercase } from '../utils/format'
-import { useLogger } from '../composables/useLogger'
+import CustomInput from './components/CustomInput.vue'
+import { toUppercase } from '@/utils/format'
+import { useLogger } from '@/composables/useLogger'
 
 // ✅ 遷移點 4：$log 已從全域 mixin 改寫成 composable，<script setup> 裡沒有 this，直接 import 使用
 const { log } = useLogger()
@@ -66,7 +66,7 @@ function submit() {
 
 <style scoped>
 .ok {
-  color: #42b983;
+  color: var(--color-brand);
   font-weight: 700;
 }
 /* ✅ 遷移點 14：v-enter 改名為 v-enter-from，v-leave-to 名稱不變 */

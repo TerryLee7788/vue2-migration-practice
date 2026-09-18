@@ -1,15 +1,15 @@
 <template>
   <div class="card">
     <h2 class="mb-3 text-lg font-semibold">購物車</h2>
-    <p v-if="!cartItems.length" class="text-[#5b6472]">
-      購物車是空的，去<router-link to="/products" class="text-[#42b983]">逛逛商品</router-link>吧。
+    <p v-if="!cartItems.length" class="text-secondary">
+      購物車是空的，去<router-link to="/products" class="text-brand">逛逛商品</router-link>吧。
     </p>
 
     <ul v-else class="m-0 list-none p-0">
       <li
         v-for="item in cartItems"
         :key="item.id"
-        class="grid grid-cols-[1fr_1fr_auto] items-center justify-between gap-3 border-b border-[#eef0f4] py-2.5"
+        class="grid grid-cols-[1fr_1fr_auto] items-center justify-between gap-3 border-b border-border py-2.5"
       >
         <span>{{ item.name }} × {{ item.qty }}</span>
         <span>{{ formatCurrency(item.price * item.qty) }}</span>
@@ -23,7 +23,7 @@
 
 <script setup>
 import { useStore } from 'vuex'
-import { formatCurrency } from '../utils/format'
+import { formatCurrency } from '@/utils/format'
 import { computed } from 'vue'
 
 const store = useStore()

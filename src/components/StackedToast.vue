@@ -11,7 +11,7 @@
     <div
       v-for="item in items"
       :key="item.id"
-      class="w-max whitespace-nowrap rounded-md bg-[#2c3e50] px-4 py-2 text-sm text-white shadow-lg"
+      class="w-max whitespace-nowrap rounded-md bg-ink px-4 py-2 text-sm text-white shadow-lg"
     >
       {{ item.text }}
     </div>
